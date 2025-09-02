@@ -1,9 +1,20 @@
+
+## ✅ 1. GitHub Repository Name and README
+
+### 🏷️ Repository Name:
+
+```
+codepals-ai-collab
+```
+
+### 📄 `README.md` (Starter Template)
+
+````markdown
 # CodePals 👩‍💻🤖 — Pair Programming with AI + People
 
 CodePals is a real-time collaborative coding platform that matches learners with fellow devs or an AI programming buddy. Built for students, educators, and self-learners, CodePals enhances coding fluency through live pair sessions, intelligent code feedback, and project-based practice.
 
 ## 🌟 Features
-
 - 🔁 Real-time collaborative code editor (like Replit)
 - 🤖 GPT-powered AI partner for solo practice
 - 📊 AI code review with line-by-line suggestions
@@ -15,28 +26,28 @@ CodePals is a real-time collaborative coding platform that matches learners with
 
 | Layer | Stack |
 |-------|-------|
-| Frontend | Next.js 15, React, Tailwind CSS, shadcn/ui |
+| Frontend | React, Tailwind CSS |
 | Backend | Node.js, Express, WebSocket (Socket.IO) |
-| AI/NLP | Z.ai Web Dev SDK, GPT-4 |
-| Database | Prisma ORM with SQLite |
-| Authentication | NextAuth.js |
-| State Management | Zustand, TanStack Query |
+| AI/NLP | OpenAI API, CodeBERT, GPT-4 |
+| Database | Supabase or Firebase (Realtime DB + Auth) |
+| Deployment | Vercel (frontend) + GCP (backend API & AI models) |
 
 ## 🚀 Getting Started
 
 ```bash
 # Clone the repo
 git clone https://github.com/<your-username>/codepals-ai-collab.git
-cd codepals-ai-collab
 
-# Install dependencies
+# Frontend setup
+cd frontend
 npm install
-
-# Start development server
 npm run dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) to see your application running.
+# Backend setup
+cd ../backend
+npm install
+npm run start
+````
 
 ## 📄 License
 
@@ -46,17 +57,45 @@ MIT
 
 Pull requests welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
-## 🎯 MVP Feature Roadmap
+```
+
+---
+
+## ✅ 2. Technical Specs
+
+### 🔁 System Architecture
+
+```
+
+Frontend (React) ↔️ WebSocket ↔️ Backend (Node.js)
+⬇                     ⬆
+Firebase DB      ↔️     AI APIs (OpenAI / CodeBERT)
+
+````
+
+### 🔧 APIs and Routes
+
+| Route | Method | Purpose |
+|-------|--------|---------|
+| `/api/match` | `POST` | Match users by skill/lang/timezone |
+| `/api/ai-review` | `POST` | Submit code for AI review |
+| `/api/recap` | `POST` | Generate post-session summary |
+| `/api/session/create` | `POST` | Create a live session |
+| `/api/session/:id` | `GET` | Fetch session details |
+
+---
+
+## ✅ 3. MVP Feature Roadmap
 
 ### 🥇 Phase 1: Core MVP (Weeks 1–2)
-- [x] Real-time collaborative code editor (Socket.IO)
-- [x] GPT-4 powered AI coding partner
-- [x] Manual matchmaking (skill, language)
+- [ ] Real-time collaborative code editor (Socket.IO)
+- [ ] GPT-4 powered AI coding partner
+- [ ] Manual matchmaking (skill, language)
 - [ ] Firebase Auth (Email/Google)
-- [x] Basic session tracking (join/leave/code updates)
+- [ ] Basic session tracking (join/leave/code updates)
 
 ### 🥈 Phase 2: Smart Add-ons (Weeks 3–4)
-- [x] AI Code Review + Line-by-Line comments
+- [ ] AI Code Review + Line-by-Line comments
 - [ ] NLP Summary (after session ends)
 - [ ] Session replay + code history
 - [ ] Dark mode toggle
@@ -67,10 +106,37 @@ Pull requests welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 - [ ] Community leaderboard & streaks
 - [ ] Feedback/rating system for partners
 
-## 🤝 Powered by Z.ai
+---
 
-This project is built with [Z.ai](https://chat.z.ai) - your AI assistant for intelligent code generation and development assistance.
+## ✅ 4. Dev Plan + Deployment Guide
+
+### 🛠 Project Setup
+
+- `frontend/`: React + Tailwind + Firebase SDK
+- `backend/`: Node.js + Express + WebSocket server
+- `functions/`: Cloud Functions for AI integration (OpenAI, GPT)
+- `supabase/`: DB schema, auth triggers, real-time listeners
 
 ---
 
-Built with ❤️ for the developer community. Supercharged by [Z.ai](https://chat.z.ai) 🚀
+### 🚀 Deployment Plan
+
+| Layer | Platform | Details |
+|-------|----------|---------|
+| Frontend | Vercel | `vercel --prod` |
+| Backend API | GCP Cloud Functions or Firebase Cloud Functions | Auto-deploy with GitHub Actions |
+| Database | Firebase (realtime DB) or Supabase | Hosted, auth-ready |
+| AI/NLP | OpenAI API / CodeBERT | .env for API keys, rate limits |
+
+---
+
+### 🔐 Secrets / API Keys (Sample `.env`)
+```env
+REACT_APP_FIREBASE_API_KEY=...
+REACT_APP_SUPABASE_URL=...
+REACT_APP_OPENAI_API_KEY=...
+````
+
+---
+
+
