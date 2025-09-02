@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model for CodePals platform
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  name            String?
+  avatar          String?
+  bio             String?
+  skillLevel      SkillLevel @default(BEGINNER)
+  timezone        String?
+  isAnonymous     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  sessionParticipants SessionParticipant[]
+  codeReviews     CodeReview[]
+  matches         Match[]
+  preferences     UserPreference?
+
+  @@map("users")
+}
+
+// User preferences for matchmaking
+model UserPreference {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  preferredLanguages String? // JSON string array of programming languages
+  preferredTopics   String? // JSON string array of topics/technologies
+  availability     String? // JSON string for availability schedule
+  isLookingForPartner Boolean @default(true)
+  aiPartnerEnabled Boolean @default(true)
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+// Coding sessions between users or with AI
+model Session {
+  id              String   @id @default(cuid())
+  title           String?
+  description     String?
+  language        String   // Programming language
+  isPrivate       Boolean  @default(false)
+  isAiSession     Boolean  @default(false)
+  status          SessionStatus @default(ACTIVE)
+  createdBy       String   // User ID or "AI" for AI sessions
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  endedAt         DateTime?
+
+  // Relations
+  participants    SessionParticipant[]
+  codeSnippets    CodeSnippet[]
+  chatMessages    ChatMessage[]
+  reviews         CodeReview[]
+
+  @@map("sessions")
+}
+
+// Session participants
+model SessionParticipant {
+  id              String   @id @default(cuid())
+  sessionId       String
+  userId          String?
+  role            ParticipantRole @default(MEMBER)
+  joinedAt        DateTime @default(now())
+  leftAt          DateTime?
+
+  session         Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user            User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, userId])
+  @@map("session_participants")
+}
+
+// Code snippets within sessions
+model CodeSnippet {
+  id              String   @id @default(cuid())
+  sessionId       String
+  filename        String?
+  content         String   // The actual code
+  language        String   // Programming language
+  version         Int      @default(1)
+  isCurrent       Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  session         Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  reviews         CodeReview[]
+
+  @@map("code_snippets")
+}
+
+// Chat messages within sessions
+model ChatMessage {
+  id              String   @id @default(cuid())
+  sessionId       String
+  userId          String?
+  content         String
+  messageType     MessageType @default(TEXT)
+  createdAt       DateTime @default(now())
+
+  session         Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+// AI code reviews
+model CodeReview {
+  id              String   @id @default(cuid())
+  sessionId       String?
+  userId          String?
+  codeSnippetId   String
+  content         String   // The code being reviewed
+  review          String   // AI review feedback
+  suggestions     String?  // JSON string array of suggestions
+  score           Int?     // Code quality score 1-100
+  createdAt       DateTime @default(now())
+
+  session         Session?  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user            User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeSnippet     CodeSnippet @relation(fields: [codeSnippetId], references: [id], onDelete: Cascade)
+
+  @@map("code_reviews")
+}
+
+// Matchmaking records
+model Match {
+  id              String   @id @default(cuid())
+  userId          String
+  matchedUserId   String?
+  matchType       MatchType
+  status          MatchStatus @default(PENDING)
+  matchedAt       DateTime?
+  sessionStarted  Boolean  @default(false)
+  sessionId       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("matches")
+}
+
+// Enums
+enum SkillLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum SessionStatus {
+  ACTIVE
+  ENDED
+  CANCELLED
+}
+
+enum ParticipantRole {
+  HOST
+  MEMBER
+  OBSERVER
+}
+
+enum MessageType {
+  TEXT
+  CODE
+  SYSTEM
+}
+
+enum MatchType {
+  HUMAN
+  AI
+  MIXED
+}
+
+enum MatchStatus {
+  PENDING
+  MATCHED
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
