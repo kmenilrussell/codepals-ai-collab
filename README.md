@@ -138,5 +138,13 @@ REACT_APP_OPENAI_API_KEY=...
 ````
 
 ---
+<img width="1512" height="817" alt="Screenshot 2025-09-02 at 8 21 55 PM" src="https://github.com/user-attachments/assets/e1b46c61-0698-4f22-91bf-e1fdcf40f492" />
+<img width="1512" height="813" alt="Screenshot 2025-09-02 at 8 22 05 PM" src="https://github.com/user-attachments/assets/300136be-5945-4e2c-ab41-1ad33063bebb" />
+<img width="1511" height="819" alt="Screenshot 2025-09-02 at 8 22 13 PM" src="https://github.com/user-attachments/assets/f75851b2-d2bc-4e8d-9ecb-cb28a873e425" />
+<img width="1512" height="817" alt="Screenshot 2025-09-02 at 8 22 22 PM" src="https://github.com/user-attachments/assets/c66a34d1-e4e4-4a0a-aff2-daf886d91393" />
+<img width="1512" height="819" alt="Screenshot 2025-09-02 at 8 22 41 PM" src="https://github.com/user-attachments/assets/d05a55c8-9ea1-48bc-9df2-36f887ba7f18" />
+<img width="1512" height="817" alt="Screenshot 2025-09-02 at 8 22 52 PM" src="https://github.com/user-attachments/assets/47450745-c492-4966-aaa3-30352ded6602" />
+<img width="1512" height="816" alt="Screenshot 2025-09-02 at 8 23 02 PM" src="https://github.com/user-attachments/assets/cb8fe33d-4cae-41c2-a96c-7632beb532a7" />
+<img width="1512" height="819" alt="Screenshot 2025-09-02 at 8 23 14 PM" src="https://github.com/user-attachments/assets/ca8df3e2-7a1c-4133-af3d-cc2863098854" />
 
 
